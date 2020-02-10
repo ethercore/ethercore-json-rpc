@@ -107,26 +107,13 @@ function fetchConfigFromReq({ network, req, source }) {
   const { method, params } = cleanReq
 
   const fetchParams = {}
-  let fetchUrl = `https://api.infura.io/v1/jsonrpc/${network}`
-  const isPostMethod = POST_METHODS.includes(method)
-  if (isPostMethod) {
-    fetchParams.method = 'POST'
-    fetchParams.headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      ...(source ? {'Infura-Source': `${source}/${requestOrigin}`} : {}),
-    },
-    fetchParams.body = JSON.stringify(cleanReq)
-  } else {
-    fetchParams.method = 'GET'
-    if (source) {
-      fetchParams.headers = {
-        'Infura-Source': `${source}/${requestOrigin}`
-      }
-    }
-    const paramsString = encodeURIComponent(JSON.stringify(params))
-    fetchUrl += `/${method}?params=${paramsString}`
+  let fetchUrl = `https://rpc.ethercore.org/`
+  fetchParams.method = 'POST'
+  fetchParams.headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
   }
+  fetchParams.body = JSON.stringify(cleanReq)
 
   return { fetchUrl, fetchParams }
 }
